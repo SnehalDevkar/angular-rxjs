@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { LoadingService } from './loading/loading.service';
+import { MessagesService } from './services/messages.service';
 
 
 
@@ -7,11 +8,11 @@ import { LoadingService } from './loading/loading.service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [LoadingService]
+  providers: [LoadingService, MessagesService]
 })
 export class AppComponent implements  OnInit {
 
-    constructor(private loadingService: LoadingService) {
+    constructor() {
 
     }
 
