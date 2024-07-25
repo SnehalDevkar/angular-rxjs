@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { CourseService } from '../services/course.service';
+import { Observable } from 'rxjs';
+import { Lesson } from '../model/lesson';
 
 @Component({
   selector: 'lesson',
@@ -6,6 +9,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lesson.component.css']
 })
 export class LessonComponent  {
-
-
+@Input()
+lesson: Lesson;
 }
