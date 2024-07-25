@@ -8,6 +8,7 @@ import {CourseDialogComponent} from '../course-dialog/course-dialog.component';
 import { CourseService } from '../services/course.service';
 import { LoadingService } from '../loading/loading.service';
 import { MessagesService } from '../services/messages.service';
+import { CourseStore } from '../services/courses.store';
 
 
 @Component({
@@ -22,9 +23,12 @@ export class HomeComponent implements OnInit {
   advancedCourses$: Observable<Course[]>;
 
 
-  constructor(private courseService: CourseService, 
-    private messagesService: MessagesService,
-  private loadingService: LoadingService) {
+  constructor(
+  //   private courseService: CourseService, 
+  //   private messagesService: MessagesService,
+  // private loadingService: LoadingService
+  private courseStore: CourseStore
+) {
 
   }
 
@@ -36,24 +40,24 @@ export class HomeComponent implements OnInit {
 
 
   reloadCourses() {
-    // this.loadingService.loadingOn();
+    // // this.loadingService.loadingOn();
 
-    const courses$ = this.courseService.loadCourses()
-    .pipe(
-      map(courses => courses.sort(sortCoursesBySeqNo)),
-      catchError(err => {
-        const message = "Could not load courses"
-        this.messagesService.showErrors(message)
-        return throwError(err);
-      })
-      // finalize(() => this.loadingService.loadingOff())
-    );
+    // const courses$ = this.courseService.loadCourses()
+    // .pipe(
+    //   map(courses => courses.sort(sortCoursesBySeqNo)),
+    //   catchError(err => {
+    //     const message = "Could not load courses"
+    //     this.messagesService.showErrors(message)
+    //     return throwError(err);
+    //   })
+    //   // finalize(() => this.loadingService.loadingOff())
+    // );
 
-    const loadCourses$ = this.loadingService.showLoaderUntilComplete(courses$)
+    // const loadCourses$ = this.loadingService.showLoaderUntilComplete(courses$)
 
-    this.beginnerCourses$ = loadCourses$.pipe(map(courses => courses.filter(course => course.category == "BEGINNER")));
+    this.beginnerCourses$ = this.courseStore.filterByCategory('BEGINNER'); //loadCourses$.pipe(map(courses => courses.filter(course => course.category == "BEGINNER")));
 
-    this.advancedCourses$ = loadCourses$.pipe(map(courses => courses.filter(course => course.category == 'ADVANCED')));
+    this.advancedCourses$ = this.courseStore.filterByCategory('ADVANCED'); //loadCourses$.pipe(map(courses => courses.filter(course => course.category == 'ADVANCED')));
   }
 }
 
